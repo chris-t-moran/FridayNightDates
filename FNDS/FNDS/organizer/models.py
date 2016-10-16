@@ -4,10 +4,12 @@ from django.db import models
 
 # Create your models here.
 
-
 class Tag(models.Model):
-    name = models.charField(max_length=31)
+    name = models.CharField(max_length=31)
     slug = models.SlugField(unique = True)
+
+    def __unicode__(self):
+        return self.name
 
 class Person(models.Model):
     f_name = models.CharField(max_length=31)
@@ -19,6 +21,15 @@ class Person(models.Model):
     e_mail = models.EmailField()
     tags = models.ManyToManyField(Tag)
 
+    def __unicode__(self):
+        return self.slug
+
+
+
+class DateEventMedia(models.Model):
+    link = models.URLField()
+
+
 class DateEvent(models.Model):
     desc = models.TextField()
     calendardate = models.DateField()
@@ -26,10 +37,14 @@ class DateEvent(models.Model):
     slug = models.SlugField(unique  = True)
     tags = models.ManyToManyField(Tag)
 
+    def __unicode__(self):
+        return self.slug
+
+
 class DateCalendar(models.Model):
     dateEvent = models.ForeignKey(DateEvent)
-    romeo = models.ForeignKey(Person)
-    juliet = models.ForeignKey(Person)
+    romeo = models.ForeignKey(Person, related_name='Romeo')
+    juliet = models.ForeignKey(Person, related_name='Juliet')
 
-class DateEventMedia(models.Model):
-    link = models.URLField()
+    def __unicode__(self):
+        return "{}:{}:{}".format(self.romeo, self.juliet, self.dateEvent)
