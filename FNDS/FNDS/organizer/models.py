@@ -17,7 +17,7 @@ class Person(models.Model):
     s_name = models.CharField(max_length=31)
     slug = models.SlugField(unique = True)
     desc = models.TextField()
-    joined_date = models.DateField()
+    joined_date = models.DateField(auto_now_add=True)
     e_mail = models.EmailField()
     tags = models.ManyToManyField(Tag)
 
